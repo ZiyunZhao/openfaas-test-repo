@@ -28,3 +28,7 @@ How to change the number of queue-worker and gateway-worker:
   --set functionNamespace=openfaas-fn > openfaas.yaml
 Here it changes the number of queue-worker to be 5 and number of gateway-worker to be 5. 
 4. kubectl apply -f namespaces.yml,openfaas.yaml
+
+
+Problem now: 
+the best I can get for now is that given 10 workers genenrating workload for hey, 90 queue-worker, 1 gateway worker, the time span from receiving the first callback to the last is around 275sec, which gives a rate of 727 qps. However, this output rate doesn't improve no matter what worker I add. 
