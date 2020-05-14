@@ -2,8 +2,7 @@
 Load testing on openfaas
 
 High level goal: I am trying to use a simple echo function to test the effect of autoscaling in openfaas. Basically, as i 
-increase the number of function replica, I expect see the output rate increase. In the end, I expect to achieve an output rate
-of 3000 qps.
+increase the number of function replica, I expect to see the output rate increase. In the end, I expect to achieve an output rate of 3000 qps.
 
 Steps to reproduce the result:
 1. Install openfaas and hey
@@ -16,3 +15,16 @@ Use the X-Callback-url header so you can see all the callback in the flask serve
 Use async-function endpoint so you are invokeing asynchronously. 
 5. After done, stop the flask server, then you will see the time it takes to process all the requests and get an idea of the 
 output rate. 
+
+How to change the number of queue-worker and gateway-worker:
+1. git clone https://github.com/openfaas/faas-netes.git
+2. cd faas-netes
+3. helm template \
+  openfaas chart/openfaas/ \
+  --namespace openfaas \
+  --set basic_auth=true \
+  --set gateway.replicas=5\
+  --set queueWorker.replicas=5\
+  --set functionNamespace=openfaas-fn > openfaas.yaml
+Here it changes the number of queue-worker to be 5 and number of gateway-worker to be 5. 
+4. kubectl apply -f namespaces.yml,openfaas.yaml
